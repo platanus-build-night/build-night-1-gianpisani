@@ -2,7 +2,7 @@
 
 import { Button } from '@/components/ui/button'
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card'
-import { Plus, FileText, ChevronRight, Trash2, Link as LinkIcon, Copy, CheckCircle2, Users } from 'lucide-react'
+import { Plus, FileText, ChevronRight, Trash2, Link as LinkIcon, Copy, CheckCircle2, Users, Download } from 'lucide-react'
 import Link from 'next/link'
 import { supabase } from '@/lib/supabase'
 import { Dialog, DialogContent, DialogDescription, DialogFooter, DialogHeader, DialogTitle } from '@/components/ui/dialog'
@@ -11,11 +11,14 @@ import { useState, useEffect } from 'react'
 import { useRouter } from 'next/navigation'
 import { toast } from 'sonner'
 import { Collapsible, CollapsibleContent, CollapsibleTrigger } from "@/components/ui/collapsible"
+import jsPDF from 'jspdf'
+import html2canvas from 'html2canvas'
 
 interface Document {
   id: string
   name: string
   content: string
+  user_id: string
   created_at: string
   form_config: {
     groups: Array<{
@@ -30,7 +33,26 @@ interface Document {
     nombre_cliente: string
     created_at: string
     form_data: any
+    status: string
   }>
+}
+
+interface FormGroup {
+  id: string
+  name: string
+  variables: Record<string, string>
+  description: string
+}
+
+interface Procedure {
+  id: string
+  document_id: string
+  nombre_cliente: string
+  created_at: string
+  status: string
+  form_data: {
+    groups: FormGroup[]
+  }
 }
 
 async function getDocuments() {
@@ -123,6 +145,132 @@ function DocumentCard({ doc, onDelete }: { doc: Document, onDelete: () => void }
     }
   }
 
+  const handleDownload = async (procedure: Procedure) => {
+    try {
+      const { data, error: docError } = await supabase
+        .from('documents')
+        .select('content, name')
+        .eq('id', procedure.document_id)
+        .single()
+
+      if (docError || !data?.content) {
+        toast.error('Error al cargar el documento')
+        return
+      }
+
+      // Procesar el contenido reemplazando las variables con sus valores
+      let content = data.content
+      procedure.form_data.groups.forEach((group: FormGroup) => {
+        Object.entries(group.variables).forEach(([key, value]) => {
+          const regex = new RegExp(`{{${key}}}`, 'g')
+          content = content.replace(regex, value || `[${key}]`)
+        })
+      })
+
+      // Crear un iframe aislado para el PDF
+      const iframe = document.createElement('iframe')
+      iframe.style.visibility = 'hidden'
+      iframe.style.position = 'fixed'
+      iframe.style.left = '-9999px'
+      document.body.appendChild(iframe)
+
+      // Asegurarnos de que el iframe está listo
+      await new Promise(resolve => {
+        iframe.onload = resolve
+        
+        // Escribir el contenido en el iframe
+        const doc = iframe.contentDocument
+        if (!doc) throw new Error('No se pudo acceder al documento del iframe')
+        
+        doc.open()
+        doc.write(`
+          <!DOCTYPE html>
+          <html>
+            <head>
+              <style>
+                body {
+                  margin: 0;
+                  padding: 40px;
+                  background: #FFFFFF;
+                  font-family: Arial, sans-serif;
+                  line-height: 1.6;
+                  color: #333333;
+                  width: 800px;
+                }
+                h1 { font-size: 24px; margin-bottom: 16px; color: #000000; }
+                h2 { font-size: 20px; margin-bottom: 14px; color: #000000; }
+                h3 { font-size: 18px; margin-bottom: 12px; color: #000000; }
+                p { margin-bottom: 12px; }
+                ul, ol { margin-bottom: 12px; padding-left: 24px; }
+                li { margin-bottom: 6px; }
+              </style>
+            </head>
+            <body>${content}</body>
+          </html>
+        `)
+        doc.close()
+      })
+
+      try {
+        // Convertir el HTML a canvas
+        const canvas = await html2canvas(iframe.contentDocument!.body, {
+          scale: 2,
+          useCORS: true,
+          logging: false,
+          backgroundColor: '#FFFFFF'
+        })
+
+        // Crear PDF
+        const pdf = new jsPDF({
+          orientation: 'portrait',
+          unit: 'mm',
+          format: 'a4'
+        })
+
+        // Configurar márgenes y tamaño
+        const imgWidth = 210 - 40 // A4 - márgenes
+        const imgHeight = (canvas.height * imgWidth) / canvas.width
+        const marginX = 20
+        const marginY = 20
+
+        // Agregar imagen del contenido
+        pdf.addImage(
+          canvas.toDataURL('image/jpeg', 1.0),
+          'JPEG',
+          marginX,
+          marginY,
+          imgWidth,
+          imgHeight
+        )
+
+        // Agregar números de página
+        const pageCount = pdf.getNumberOfPages()
+        for (let i = 1; i <= pageCount; i++) {
+          pdf.setPage(i)
+          pdf.setFontSize(10)
+          pdf.setTextColor(128)
+          pdf.text(
+            `Página ${i} de ${pageCount}`,
+            pdf.internal.pageSize.getWidth() / 2,
+            pdf.internal.pageSize.getHeight() - 10,
+            { align: 'center' }
+          )
+        }
+
+        // Descargar PDF
+        pdf.save(`${data.name || 'documento'}.pdf`)
+      } finally {
+        // Limpiar el iframe
+        document.body.removeChild(iframe)
+      }
+
+      toast.success('Documento descargado correctamente')
+    } catch (error) {
+      console.error('Error:', error)
+      toast.error('Error al descargar el documento')
+    }
+  }
+
   return (
     <Card className="hover:shadow-2xl p-4 hover:shadow-blue-500/5 transition-all duration-300 bg-gray-800/50 border-gray-700 relative group">
       <Link href={`/documents/${doc.id}`}>
@@ -207,17 +355,29 @@ function DocumentCard({ doc, onDelete }: { doc: Document, onDelete: () => void }
                 className="flex items-center justify-between p-3 bg-gray-700/30 rounded-lg group/procedure"
               >
                 <div className="flex items-center gap-3">
-                  <div className="w-2 h-2 rounded-full bg-emerald-500"></div>
+                  <div className={`w-2 h-2 rounded-full ${procedure.status === 'completed' ? 'bg-emerald-500' : 'bg-yellow-500'}`}></div>
                   <span className="text-gray-300 text-sm">{procedure.nombre_cliente}</span>
                 </div>
-                <Button
-                  variant="ghost"
-                  size="icon"
-                  className="h-7 w-7 opacity-0 group-hover/procedure:opacity-100 transition-opacity"
-                  onClick={() => handleCopyLink(procedure.id)}
-                >
-                  <Copy className="h-3 w-3 text-gray-400" />
-                </Button>
+                <div className="flex items-center gap-2">
+                  {procedure.status === 'completed' && (
+                    <Button
+                      variant="ghost"
+                      size="icon"
+                      className="h-7 w-7 opacity-0 group-hover/procedure:opacity-100 transition-opacity"
+                      onClick={() => handleDownload(procedure as Procedure)}
+                    >
+                      <Download className="h-3 w-3 text-emerald-400 hover:text-emerald-300" />
+                    </Button>
+                  )}
+                  <Button
+                    variant="ghost"
+                    size="icon"
+                    className="h-7 w-7 opacity-0 group-hover/procedure:opacity-100 transition-opacity"
+                    onClick={() => handleCopyLink(procedure.id)}
+                  >
+                    <Copy className="h-3 w-3 text-gray-400" />
+                  </Button>
+                </div>
               </div>
             ))}
           </CollapsibleContent>
@@ -415,3 +575,4 @@ export default function Home() {
     </div>
   )
 }
+

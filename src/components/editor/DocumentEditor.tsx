@@ -95,7 +95,7 @@ export default function DocumentEditor({ initialDocument }: DocumentEditorProps)
       await saveDocument(
         documentName,
         editorContent,
-        formConfig
+        formConfig as unknown as Document['form_config']
       )
       toast.success('Documento guardado')
       router.push('/')
