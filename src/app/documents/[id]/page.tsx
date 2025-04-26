@@ -2,14 +2,16 @@ import { notFound } from 'next/navigation'
 import DocumentEditor from '@/components/editor/DocumentEditor'
 import { getDocument } from '@/lib/supabase'
 
-export default async function DocumentPage({ params }: { params: { id: string } }) {
+// @ts-ignore
+export default async function DocumentPage({ params }: any) {
   let document
-  
+
   try {
-    if (params.id === 'new') {
+    const id = params.id
+    if (id === 'new') {
       document = null
     } else {
-      document = await getDocument(params.id)
+      document = await getDocument(id)
       if (!document) notFound()
     }
   } catch (error) {
@@ -18,7 +20,6 @@ export default async function DocumentPage({ params }: { params: { id: string } 
 
   return (
     <div className="min-h-screen bg-gray-50">
-        
       <DocumentEditor initialDocument={document} />
     </div>
   )

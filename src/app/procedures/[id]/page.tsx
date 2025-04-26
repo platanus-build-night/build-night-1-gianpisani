@@ -32,6 +32,10 @@ export default function ProcedurePage({ params }: { params: Promise<{ id: string
   const [showSuccessModal, setShowSuccessModal] = useState(false)
   const [isSubmitting, setIsSubmitting] = useState(false)
 
+  const totalSteps = formData ? formData.groups.length + 1 : 0 // +1 for confirmation step
+  const isLastStep = currentStep === totalSteps - 1
+  const isConfirmationStep = currentStep === formData?.groups.length
+
   useEffect(() => {
     const fetchProcedure = async () => {
       try {
@@ -55,7 +59,7 @@ export default function ProcedurePage({ params }: { params: Promise<{ id: string
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault()
-    if (!formData) return
+    if (!formData || !isConfirmationStep) return
 
     try {
       setIsSubmitting(true)
@@ -96,10 +100,7 @@ export default function ProcedurePage({ params }: { params: Promise<{ id: string
     }
   }
 
-  if (loading) {
-    return <Spinner />
-  }
-
+  if (loading) return <Spinner />
   if (!formData) {
     return (
       <div className="min-h-screen flex items-center justify-center">
@@ -120,10 +121,12 @@ export default function ProcedurePage({ params }: { params: Promise<{ id: string
             <CardHeader className="text-center border-b bg-white px-6 py-4">
               <CardTitle className="text-2xl font-semibold text-gray-900 flex items-center gap-2 justify-center">
                 <div className="w-2 h-2 rounded-full bg-blue-600"></div>
-                Complete el Formulario
+                {isConfirmationStep ? 'Confirmar y Enviar' : 'Complete el Formulario'}
               </CardTitle>
               <p className="text-sm text-gray-500 mt-2">
-                Complete los siguientes pasos para generar su documento
+                {isConfirmationStep 
+                  ? 'Revise la información y confirme el envío'
+                  : 'Complete los siguientes pasos para generar su documento'}
               </p>
 
               {/* Progress Bar */}
@@ -131,11 +134,11 @@ export default function ProcedurePage({ params }: { params: Promise<{ id: string
                 <div className="h-1 bg-gray-200 rounded-full">
                   <div 
                     className="h-1 bg-blue-600 rounded-full transition-all duration-500 ease-out"
-                    style={{ width: `${((currentStep + 1) / formData.groups.length) * 100}%` }}
+                    style={{ width: `${((currentStep + 1) / totalSteps) * 100}%` }}
                   />
                 </div>
                 <div className="flex justify-between mt-2">
-                  {formData.groups.map((_, index) => (
+                  {[...Array(totalSteps)].map((_, index) => (
                     <div 
                       key={index}
                       className={`flex items-center justify-center w-8 h-8 rounded-full border-2 transition-all duration-300 ${
@@ -163,57 +166,84 @@ export default function ProcedurePage({ params }: { params: Promise<{ id: string
             <CardContent className="flex-1 overflow-y-auto p-6">
               <form id="procedureForm" onSubmit={handleSubmit}>
                 <AnimatePresence mode="wait">
-                  {formData.groups.map((group, index) => (
-                    index === currentStep && (
-                      <motion.div
-                        key={group.id}
-                        initial={{ opacity: 0, x: 20 }}
-                        animate={{ opacity: 1, x: 0 }}
-                        exit={{ opacity: 0, x: -20 }}
-                        transition={{ duration: 0.3 }}
-                        className="space-y-6"
-                      >
-                        <div className="space-y-2">
-                          <h3 className="text-xl font-semibold text-gray-900 flex items-center gap-2">
-                            <div className="flex items-center justify-center w-6 h-6 rounded-full bg-blue-100 text-blue-600 text-sm">
-                              {index + 1}
-                            </div>
-                            {group.name}
-                          </h3>
-                          {group.description && (
-                            <p className="text-sm text-gray-500">{group.description}</p>
-                          )}
+                  {isConfirmationStep ? (
+                    <motion.div
+                      key="confirmation"
+                      initial={{ opacity: 0, x: 20 }}
+                      animate={{ opacity: 1, x: 0 }}
+                      exit={{ opacity: 0, x: -20 }}
+                      transition={{ duration: 0.3 }}
+                      className="space-y-8"
+                    >
+                      {formData.groups.map((group) => (
+                        <div key={group.id} className="space-y-4">
+                          <h4 className="font-medium text-gray-900">{group.name}</h4>
+                          <div className="bg-gray-50 rounded-lg p-4 space-y-3">
+                            {Object.keys(group.variables).map((variable) => (
+                              <div key={variable} className="grid grid-cols-2 gap-2">
+                                <span className="text-gray-600">
+                                  {variable.replace(/_/g, ' ').replace(/\b\w/g, l => l.toUpperCase())}:
+                                </span>
+                                <span className="font-medium">{values[variable] || '-'}</span>
+                              </div>
+                            ))}
+                          </div>
                         </div>
+                      ))}
+                    </motion.div>
+                  ) : (
+                    formData.groups.map((group, index) => (
+                      index === currentStep && (
+                        <motion.div
+                          key={group.id}
+                          initial={{ opacity: 0, x: 20 }}
+                          animate={{ opacity: 1, x: 0 }}
+                          exit={{ opacity: 0, x: -20 }}
+                          transition={{ duration: 0.3 }}
+                          className="space-y-6"
+                        >
+                          <div className="space-y-2">
+                            <h3 className="text-xl font-semibold text-gray-900 flex items-center gap-2">
+                              <div className="flex items-center justify-center w-6 h-6 rounded-full bg-blue-100 text-blue-600 text-sm">
+                                {index + 1}
+                              </div>
+                              {group.name}
+                            </h3>
+                            {group.description && (
+                              <p className="text-sm text-gray-500">{group.description}</p>
+                            )}
+                          </div>
 
-                        <div className="grid grid-cols-1 gap-4">
-                          {Object.keys(group.variables).map((variable) => (
-                            <motion.div
-                              key={variable}
-                              initial={{ opacity: 0, y: 10 }}
-                              animate={{ opacity: 1, y: 0 }}
-                              transition={{ duration: 0.2 }}
-                              className="space-y-2 bg-gray-50 p-4 rounded-lg border border-gray-100"
-                            >
-                              <Label htmlFor={variable} className="text-sm font-medium text-gray-700 block">
-                                {variable.replace(/_/g, ' ').replace(/\b\w/g, l => l.toUpperCase())}
-                              </Label>
-                              <Input
-                                id={variable}
-                                value={values[variable] || ''}
-                                onChange={(e) => setValues(prev => ({
-                                  ...prev,
-                                  [variable]: e.target.value
-                                }))}
-                                placeholder={`Ingrese ${variable.toLowerCase()}`}
-                                className="w-full bg-white"
-                                required
-                              />
-                            </motion.div>
-                          ))}
-                        </div>
-                      </motion.div>
-                    )
-                  ))}
+                          <div className="grid grid-cols-1 gap-4">
+                            {Object.keys(group.variables).map((variable) => (
+                              <motion.div
+                                key={variable}
+                                initial={{ opacity: 0, y: 10 }}
+                                animate={{ opacity: 1, y: 0 }}
+                                transition={{ duration: 0.2 }}
+                                className="space-y-2 bg-gray-50 p-4 rounded-lg border border-gray-100"
+                              >
+                                <Label htmlFor={variable} className="text-sm font-medium text-gray-700 block">
+                                  {variable.replace(/_/g, ' ').replace(/\b\w/g, l => l.toUpperCase())}
+                                </Label>
+                                <Input
+                                  id={variable}
+                                  value={values[variable] || ''}
+                                  onChange={(e) => setValues(prev => ({
+                                    ...prev,
+                                    [variable]: e.target.value
+                                  }))}
+                                  placeholder={`Ingrese ${variable.toLowerCase()}`}
+                                  className="w-full bg-white"
+                                  required
+                                />
+                              </motion.div>
+                            ))}
+                          </div>
+                        </motion.div>
+                      )
+                    ))
+                  )}
                 </AnimatePresence>
               </form>
             </CardContent>
@@ -234,12 +264,12 @@ export default function ProcedurePage({ params }: { params: Promise<{ id: string
                 
                 <div className="flex items-center gap-2">
                   <span className="text-sm text-gray-500">
-                    Paso {currentStep + 1} de {formData.groups.length}
+                    Paso {currentStep + 1} de {totalSteps}
                   </span>
-                  {currentStep < formData.groups.length - 1 ? (
+                  {!isConfirmationStep ? (
                     <Button
                       type="button"
-                      onClick={() => setCurrentStep(prev => Math.min(formData.groups.length - 1, prev + 1))}
+                      onClick={() => setCurrentStep(prev => prev + 1)}
                       className="bg-blue-600 hover:bg-blue-700 text-white flex items-center gap-2"
                     >
                       Siguiente
@@ -249,10 +279,20 @@ export default function ProcedurePage({ params }: { params: Promise<{ id: string
                     <Button
                       type="submit"
                       form="procedureForm"
-                      className="bg-emerald-600 hover:bg-emerald-700 text-white flex items-center gap-2"
+                      disabled={isSubmitting}
+                      className="bg-emerald-600 hover:bg-emerald-700 text-white flex items-center gap-2 min-w-[160px] justify-center"
                     >
-                      Finalizar
-                      <Check className="w-4 h-4" />
+                      {isSubmitting ? (
+                        <>
+                          <Spinner className="w-4 h-4" />
+                          Enviando...
+                        </>
+                      ) : (
+                        <>
+                          Confirmar y Enviar
+                          <Check className="w-4 h-4" />
+                        </>
+                      )}
                     </Button>
                   )}
                 </div>

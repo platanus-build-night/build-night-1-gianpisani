@@ -24,13 +24,11 @@ export function AddVariableDialog({
   onAdd,
 }: AddVariableDialogProps) {
   const [name, setName] = useState("")
-  const [placeholder, setPlaceholder] = useState("")
 
   const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault()
-    onAdd({ name, placeholder })
+    onAdd({ name})
     setName("")
-    setPlaceholder("")
     onOpenChange(false)
   }
 
@@ -56,19 +54,6 @@ export function AddVariableDialog({
               value={name}
               onChange={(e) => setName(e.target.value)}
               placeholder="e.g. Client Name"
-              className="bg-slate-800 border-slate-700 text-slate-200 focus:ring-blue-400 focus:border-blue-400"
-            />
-          </div>
-
-          <div className="space-y-2">
-            <Label htmlFor="placeholder" className="text-slate-200">
-              Placeholder
-            </Label>
-            <Input
-              id="placeholder"
-              value={placeholder}
-              onChange={(e) => setPlaceholder(e.target.value)}
-              placeholder="e.g. John Doe"
               className="bg-slate-800 border-slate-700 text-slate-200 focus:ring-blue-400 focus:border-blue-400"
             />
           </div>

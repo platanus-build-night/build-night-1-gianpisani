@@ -1,6 +1,5 @@
 export interface Variable {
   name: string
-  value?: string
 }
 
 export interface FormGroup {

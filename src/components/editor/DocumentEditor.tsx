@@ -12,8 +12,6 @@ import { toast } from 'sonner'
 import { useRouter } from 'next/navigation'
 import { Document } from '@/lib/supabase'
 
-import { MenuBar } from './MenuBar'
-import { AddVariableDialog } from './dialogs/AddVariableDialog'
 import { AddGroupDialog } from './dialogs/AddGroupDialog'
 import { FormPreview } from './previews/FormPreview'
 import { VariableNode } from './VariableNode'

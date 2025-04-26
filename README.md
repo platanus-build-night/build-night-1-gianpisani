@@ -1,36 +1,65 @@
-This is a [Next.js](https://nextjs.org) project bootstrapped with [`create-next-app`](https://nextjs.org/docs/app/api-reference/cli/create-next-app).
+# 📝 Formai
 
-## Getting Started
+Formai es una plataforma moderna para la generación y gestión de documentos legales dinámicos. Permite crear, personalizar y descargar documentos con variables personalizadas en múltiples formatos.
 
-First, run the development server:
+![Formai Banner](https://raw.githubusercontent.com/gianpisani/formai/main/public/banner.png)
+
+## ✨ Características
+
+- 🎯 **Formularios Multi-paso**: Experiencia de usuario intuitiva con formularios paso a paso
+- 📄 **Documentos Dinámicos**: Generación de documentos con variables personalizables
+- 💾 **Múltiples Formatos**: Exportación a PDF y Word
+- 🔄 **Vista Previa en Tiempo Real**: Visualización instantánea de los cambios
+- 🎨 **UI/UX Moderna**: Diseño limpio y responsive con animaciones fluidas
+- 🔒 **Validación de Datos**: Asegura la integridad de la información ingresada
+
+## 🚀 Tecnologías
+
+- [Next.js 14](https://nextjs.org/) - Framework React
+- [Supabase](https://supabase.com/) - Backend y Base de Datos
+- [Tailwind CSS](https://tailwindcss.com/) - Estilos
+- [Framer Motion](https://www.framer.com/motion/) - Animaciones
+- [shadcn/ui](https://ui.shadcn.com/) - Componentes UI
+
+## 🛠️ Instalación
 
 ```bash
+# Clonar el repositorio
+git clone https://github.com/yourusername/formai.git
+
+# Instalar dependencias
+cd formai
+npm install
+
+# Configurar variables de entorno
+cp .env.example .env.local
+
+# Iniciar servidor de desarrollo
 npm run dev
-# or
-yarn dev
-# or
-pnpm dev
-# or
-bun dev
 ```
 
-Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
+## 📖 Uso
 
-You can start editing the page by modifying `app/page.tsx`. The page auto-updates as you edit the file.
+1. **Crear un Documento**: Define las variables y estructura del documento
+2. **Configurar Formulario**: Organiza los campos en grupos lógicos
+3. **Generar Link**: Comparte el link del formulario con los usuarios
+4. **Recolectar Datos**: Los usuarios completan el formulario paso a paso
+5. **Descargar**: Obtén el documento final en PDF o Word
 
-This project uses [`next/font`](https://nextjs.org/docs/app/building-your-application/optimizing/fonts) to automatically optimize and load [Geist](https://vercel.com/font), a new font family for Vercel.
+## 🤝 Contribuir
 
-## Learn More
+Las contribuciones son bienvenidas. Por favor, lee las [guías de contribución](CONTRIBUTING.md) antes de empezar.
 
-To learn more about Next.js, take a look at the following resources:
+## 📄 Licencia
 
-- [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
-- [Learn Next.js](https://nextjs.org/learn) - an interactive Next.js tutorial.
+Este proyecto está bajo la Licencia MIT - ver el archivo [LICENSE](LICENSE) para más detalles.
 
-You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js) - your feedback and contributions are welcome!
+## 👥 Equipo
 
-## Deploy on Vercel
+- [@gianpisani](https://github.com/gianpisani) - Creador y Mantenedor Principal
 
-The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
+---
 
-Check out our [Next.js deployment documentation](https://nextjs.org/docs/app/building-your-application/deploying) for more details.
+<p align="center">
+  Hecho con ❤️ usando Next.js y Supabase
+</p>
