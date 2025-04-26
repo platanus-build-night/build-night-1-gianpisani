@@ -15,6 +15,7 @@ import jsPDF from 'jspdf'
 import html2canvas from 'html2canvas'
 import { Document, FormGroup, Procedure } from '@/app/types'
 import { handleDownload } from '@/lib/handleDownload'
+import Spinner from '@/components/ui/spinner';
 
 async function getDocuments() {
   const { data, error } = await supabase
@@ -353,10 +354,12 @@ function DocumentCard({ doc, onDelete }: { doc: Document, onDelete: () => void }
 
 export default function Home() {
   const [documents, setDocuments] = useState<Document[]>([])
+  const [loading, setLoading] = useState(true)
   const router = useRouter()
 
   useEffect(() => {
     loadDocuments()
+    setLoading(false) 
   }, [])
 
   const loadDocuments = async () => {
@@ -367,6 +370,10 @@ export default function Home() {
       console.error('Error loading documents:', error)
       toast.error('Error al cargar los documentos')
     }
+  }
+
+  if (loading) {
+    return <Spinner />
   }
 
   return (

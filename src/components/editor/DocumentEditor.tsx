@@ -6,7 +6,7 @@ import { useCallback, useEffect, useState, useMemo } from 'react'
 import { Card, CardContent, CardHeader, CardTitle } from '../ui/card'
 import { Tabs, TabsContent, TabsList, TabsTrigger } from '../ui/tabs'
 import { Button } from '../ui/button'
-import { Trash2, GripVertical, Save } from 'lucide-react'
+import { Trash2, GripVertical, Save, Eye, Check, ChevronRight, ChevronLeft } from 'lucide-react'
 import { motion, AnimatePresence } from 'framer-motion'
 import { toast } from 'sonner'
 import { useRouter } from 'next/navigation'
@@ -55,6 +55,8 @@ export default function DocumentEditor({ initialDocument }: DocumentEditorProps)
   const [showSaveDialog, setShowSaveDialog] = useState(false)
   const [selectedVariable, setSelectedVariable] = useState<string | null>(null)
   const [showAddToGroupDialog, setShowAddToGroupDialog] = useState(false)
+  const [showPreview, setShowPreview] = useState(false)
+  const [previewStep, setPreviewStep] = useState(0)
 
   const variables = extractVariables(editorContent)
 
@@ -198,14 +200,25 @@ export default function DocumentEditor({ initialDocument }: DocumentEditorProps)
                         </h3>
                         <p className="text-gray-500 mt-2">Organiza las variables en grupos para crear el formulario</p>
                       </div>
-                      <motion.button
-                        whileHover={{ scale: 1.02 }}
-                        whileTap={{ scale: 0.98 }}
-                        className="px-6 py-3 bg-blue-600 text-white rounded-lg font-medium shadow-lg shadow-blue-500/20 hover:bg-blue-700 hover:shadow-xl hover:shadow-blue-500/30 transition-all"
-                        onClick={() => setIsAddingGroup(true)}
-                      >
-                        Agregar Grupo
-                      </motion.button>
+                      <div className="flex gap-3">
+                        <motion.button
+                          whileHover={{ scale: 1.02 }}
+                          whileTap={{ scale: 0.98 }}
+                          className="px-6 py-3 bg-gray-100 text-gray-700 rounded-lg font-medium hover:bg-gray-200 transition-all flex items-center gap-2"
+                          onClick={() => setShowPreview(true)}
+                        >
+                          <Eye className="w-4 h-4" />
+                          Previsualizar
+                        </motion.button>
+                        <motion.button
+                          whileHover={{ scale: 1.02 }}
+                          whileTap={{ scale: 0.98 }}
+                          className="px-6 py-3 bg-blue-600 text-white rounded-lg font-medium shadow-lg shadow-blue-500/20 hover:bg-blue-700 hover:shadow-xl hover:shadow-blue-500/30 transition-all"
+                          onClick={() => setIsAddingGroup(true)}
+                        >
+                          Agregar Grupo
+                        </motion.button>
+                      </div>
                     </div>
 
                     <AnimatePresence>
@@ -445,6 +458,142 @@ export default function DocumentEditor({ initialDocument }: DocumentEditorProps)
           </DialogContent>
         </Dialog>
       )}
+
+      <Dialog open={showPreview} onOpenChange={setShowPreview}>
+        <DialogContent className="max-w-3xl min-h-[700px] max-h-[700px] flex flex-col p-0">
+          <div className="px-6 py-4 border-b">
+            <DialogHeader>
+              <DialogTitle className="text-2xl flex items-center gap-2">
+                <div className="w-2 h-2 rounded-full bg-blue-600"></div>
+                Previsualización del Formulario
+              </DialogTitle>
+              <DialogDescription>
+                Complete los siguientes pasos para generar su documento
+              </DialogDescription>
+            </DialogHeader>
+
+            {/* Progress Bar - Fixed at top */}
+            <div className="mt-4">
+              <div className="h-1 bg-gray-200 rounded-full">
+                <div 
+                  className="h-1 bg-blue-600 rounded-full transition-all duration-500 ease-out"
+                  style={{ width: `${((previewStep + 1) / formConfig.groups.length) * 100}%` }}
+                />
+              </div>
+              <div className="flex justify-between mt-2">
+                {formConfig.groups.map((_, index) => (
+                  <div 
+                    key={index}
+                    className={`flex items-center justify-center w-8 h-8 rounded-full border-2 transition-all duration-300 ${
+                      index === previewStep 
+                        ? 'border-blue-600 bg-blue-600 text-white'
+                        : index < previewStep
+                        ? 'border-blue-600 bg-white'
+                        : 'border-gray-300 bg-white'
+                    }`}
+                  >
+                    {index < previewStep ? (
+                      <Check className="w-4 h-4 text-blue-600" />
+                    ) : (
+                      <span className={index === previewStep ? 'text-white' : 'text-gray-500'}>
+                        {index + 1}
+                      </span>
+                    )}
+                  </div>
+                ))}
+              </div>
+            </div>
+          </div>
+
+          {/* Scrollable Form Content */}
+          <div className="flex-1 overflow-y-auto px-6 py-4">
+            <AnimatePresence mode="wait">
+              {formConfig.groups.map((group, index) => (
+                index === previewStep && (
+                  <motion.div
+                    key={group.id}
+                    initial={{ opacity: 0, x: 20 }}
+                    animate={{ opacity: 1, x: 0 }}
+                    exit={{ opacity: 0, x: -20 }}
+                    transition={{ duration: 0.3 }}
+                    className="space-y-6"
+                  >
+                    <div className="space-y-2">
+                      <h3 className="text-xl font-semibold text-gray-900 flex items-center gap-2">
+                        <div className="flex items-center justify-center w-6 h-6 rounded-full bg-blue-100 text-blue-600 text-sm">
+                          {index + 1}
+                        </div>
+                        {group.name}
+                      </h3>
+                      {group.description && (
+                        <p className="text-sm text-gray-500">{group.description}</p>
+                      )}
+                    </div>
+
+                    <div className="grid grid-cols-1 gap-4">
+                      {group.variables.map((varName) => (
+                        <motion.div
+                          key={varName}
+                          initial={{ opacity: 0, y: 10 }}
+                          animate={{ opacity: 1, y: 0 }}
+                          transition={{ duration: 0.2 }}
+                          className="space-y-2 bg-gray-50 p-4 rounded-lg border border-gray-100"
+                        >
+                          <label className="text-sm font-medium text-gray-700 block">
+                            {varName.replace(/_/g, ' ').replace(/\b\w/g, l => l.toUpperCase())}
+                          </label>
+                          <Input
+                            placeholder={`Ingrese ${varName.replace(/_/g, ' ').toLowerCase()}`}
+                            className="w-full bg-white"
+                          />
+                        </motion.div>
+                      ))}
+                    </div>
+                  </motion.div>
+                )
+              ))}
+            </AnimatePresence>
+          </div>
+
+          {/* Fixed Navigation Footer */}
+          <div className="border-t px-6 py-4 bg-white">
+            <div className="flex justify-between items-center">
+              <Button
+                variant="outline"
+                onClick={() => setPreviewStep(prev => Math.max(0, prev - 1))}
+                disabled={previewStep === 0}
+                className="flex items-center gap-2"
+              >
+                <ChevronLeft className="w-4 h-4" />
+                Anterior
+              </Button>
+              
+              <div className="flex items-center gap-2">
+                <span className="text-sm text-gray-500">
+                  Paso {previewStep + 1} de {formConfig.groups.length}
+                </span>
+                {previewStep < formConfig.groups.length - 1 ? (
+                  <Button
+                    onClick={() => setPreviewStep(prev => Math.min(formConfig.groups.length - 1, prev + 1))}
+                    className="bg-blue-600 hover:bg-blue-700 text-white flex items-center gap-2"
+                  >
+                    Siguiente
+                    <ChevronRight className="w-4 h-4" />
+                  </Button>
+                ) : (
+                  <Button
+                    onClick={() => setShowPreview(false)}
+                    className="bg-emerald-600 hover:bg-emerald-700 text-white flex items-center gap-2"
+                  >
+                    Finalizar
+                    <Check className="w-4 h-4" />
+                  </Button>
+                )}
+              </div>
+            </div>
+          </div>
+        </DialogContent>
+      </Dialog>
     </motion.div>
   )
 } 

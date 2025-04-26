@@ -24,7 +24,7 @@ export function FormPreview({ groups, onSubmit }: FormPreviewProps) {
   }, [])
 
   return (
-    <Card className="w-full">
+    <Card className="w-full min-h-[700px] max-h-[700px]">
       <CardHeader>
         <CardTitle>Formulario</CardTitle>
       </CardHeader>
