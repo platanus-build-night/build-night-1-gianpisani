@@ -10,7 +10,7 @@ import { supabase } from '@/lib/supabase'
 import Spinner from '@/components/ui/spinner'
 import { Check, ChevronRight, ChevronLeft } from 'lucide-react'
 import { motion, AnimatePresence } from 'framer-motion'
-import { Dialog, DialogContent } from '@/components/ui/dialog'
+import { Dialog, DialogContent, DialogTitle } from '@/components/ui/dialog'
 import { useRouter } from 'next/navigation'
 
 interface FormData {
@@ -264,6 +264,7 @@ export default function ProcedurePage({ params }: { params: Promise<{ id: string
 
       <Dialog open={showSuccessModal} onOpenChange={setShowSuccessModal}>
         <DialogContent className="sm:max-w-md">
+          <DialogTitle className="sr-only">Confirmación de envío</DialogTitle>
           <motion.div 
             initial={{ opacity: 0, scale: 0.95 }}
             animate={{ opacity: 1, scale: 1 }}
