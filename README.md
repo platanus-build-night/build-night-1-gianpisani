@@ -2,7 +2,6 @@
 
 Formai es una plataforma moderna para la generación y gestión de documentos legales dinámicos. Permite crear, personalizar y descargar documentos con variables personalizadas en múltiples formatos.
 
-![Formai Banner](https://raw.githubusercontent.com/gianpisani/formai/main/public/banner.png)
 
 ## ✨ Características
 
@@ -25,14 +24,14 @@ Formai es una plataforma moderna para la generación y gestión de documentos le
 
 ```bash
 # Clonar el repositorio
-git clone https://github.com/yourusername/formai.git
+git clone https://github.com/platanus-build-night/build-night-1-gianpisani.git
 
 # Instalar dependencias
-cd formai
+cd build-night-1-gianpisani
 npm install
 
 # Configurar variables de entorno
-cp .env.example .env.local
+cp .env.example
 
 # Iniciar servidor de desarrollo
 npm run dev
@@ -49,10 +48,6 @@ npm run dev
 ## 🤝 Contribuir
 
 Las contribuciones son bienvenidas. Por favor, lee las [guías de contribución](CONTRIBUTING.md) antes de empezar.
-
-## 📄 Licencia
-
-Este proyecto está bajo la Licencia MIT - ver el archivo [LICENSE](LICENSE) para más detalles.
 
 ## 👥 Equipo
 
