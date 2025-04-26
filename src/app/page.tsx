@@ -116,11 +116,10 @@ function DocumentCard({ doc, onDelete }: { doc: Document, onDelete: () => void }
               <div className="p-2 bg-blue-500/10 rounded-lg">
                 <FileText className="w-5 h-5 text-blue-400" />
               </div>
-              <CardTitle className="text-lg font-medium text-gray-100 line-clamp-1">
-                {doc.name}
+              <CardTitle className="text-lg font-medium text-gray-100 line-clamp-1 inline-flex items-center gap-2">
+                {doc.name} <ChevronRight className="w-4 h-4 text-gray-500" />
               </CardTitle>
             </div>
-            <ChevronRight className="w-5 h-5 text-gray-500" />
           </div>
         </CardHeader>
       </Link>
