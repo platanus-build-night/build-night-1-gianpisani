@@ -52,9 +52,3 @@ Las contribuciones son bienvenidas. Por favor, lee las [guías de contribución]
 ## 👥 Equipo
 
 - [@gianpisani](https://github.com/gianpisani) - Creador y Mantenedor Principal
-
----
-
-<p align="center">
-  Hecho con ❤️ usando Next.js y Supabase
-</p>
