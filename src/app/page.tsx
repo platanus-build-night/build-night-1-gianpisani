@@ -404,15 +404,28 @@ export default function Home() {
               initial={{ opacity: 0, y: 20 }}
               whileInView={{ opacity: 1, y: 0 }}
               viewport={{ once: true }}
-              className="text-center"
+              className="relative group"
             >
-              <div className="w-12 h-12 bg-emerald-100 rounded-full flex items-center justify-center mx-auto mb-4">
-                <FileText className="w-6 h-6 text-emerald-600" />
+              <div className="absolute -inset-4 rounded-xl opacity-0 group-hover:opacity-100 transition-all duration-500 blur-xl"></div>
+              <div className="relative bg-transparent rounded-xl p-8">
+                <div className="flex items-center gap-4 mb-6">
+                  <div className="relative">
+                    <div className="w-16 h-16 bg-gradient-to-br from-emerald-500 to-emerald-600 rounded-2xl flex items-center justify-center transform -rotate-6 group-hover:rotate-0 transition-transform duration-300">
+                      <FileText className="w-8 h-8 text-white" />
+                    </div>
+                    <div className="absolute -bottom-2 -right-2 w-6 h-6 bg-emerald-200 rounded-full flex items-center justify-center">
+                      <span className="text-emerald-700 text-xs">01</span>
+                    </div>
+                  </div>
+                  <div>
+                    <h3 className="text-xl font-serif font-semibold text-slate-900">Editor Inteligente</h3>
+                    <div className="w-12 h-1 bg-emerald-100 mt-2"></div>
+                  </div>
+                </div>
+                <p className="text-slate-800 leading-relaxed text-justify font-light text-sm">
+                  Interfaz limpia y profesional diseñada para crear documentos sin distracciones. Experiencia de edición fluida y natural.
+                </p>
               </div>
-              <h3 className="text-lg font-medium text-slate-900 mb-2">Editor Intuitivo</h3>
-              <p className="text-sm text-slate-600 font-light">
-                Interfaz limpia y profesional para crear documentos sin distracciones
-              </p>
             </motion.div>
 
             <motion.div
@@ -420,15 +433,28 @@ export default function Home() {
               whileInView={{ opacity: 1, y: 0 }}
               viewport={{ once: true }}
               transition={{ delay: 0.1 }}
-              className="text-center"
+              className="relative group"
             >
-              <div className="w-12 h-12 bg-blue-100 rounded-full flex items-center justify-center mx-auto mb-4">
-                <Users className="w-6 h-6 text-blue-600" />
+              <div className="absolute -inset-4 rounded-xl opacity-0 group-hover:opacity-100 transition-all duration-500 blur-xl"></div>
+              <div className="relative bg-transparent rounded-xl p-8">
+                <div className="flex items-center gap-4 mb-6">
+                  <div className="relative">
+                    <div className="w-16 h-16 bg-gradient-to-br from-blue-500 to-blue-600 rounded-2xl flex items-center justify-center transform -rotate-6 group-hover:rotate-0 transition-transform duration-300">
+                      <Users className="w-8 h-8 text-white" />
+                    </div>
+                    <div className="absolute -bottom-2 -right-2 w-6 h-6 bg-blue-200 rounded-full flex items-center justify-center">
+                      <span className="text-blue-700 text-xs">02</span>
+                    </div>
+                  </div>
+                  <div>
+                    <h3 className="text-xl font-serif font-semibold text-slate-900">Variables Dinámicas</h3>
+                    <div className="w-12 h-1 bg-blue-100 mt-2"></div>
+                  </div>
+                </div>
+                <p className="text-slate-800 leading-relaxed text-justify font-light text-sm">
+                  Inserte variables que se transforman automáticamente en campos de formulario personalizados para sus clientes.
+                </p>
               </div>
-              <h3 className="text-lg font-medium text-slate-900 mb-2">Variables Dinámicas</h3>
-              <p className="text-sm text-slate-600 font-light">
-                Inserte variables que se convierten automáticamente en formularios personalizados
-              </p>
             </motion.div>
 
             <motion.div
@@ -436,16 +462,293 @@ export default function Home() {
               whileInView={{ opacity: 1, y: 0 }}
               viewport={{ once: true }}
               transition={{ delay: 0.2 }}
-              className="text-center"
+              className="relative group"
             >
-              <div className="w-12 h-12 bg-purple-100 rounded-full flex items-center justify-center mx-auto mb-4">
-                <Eye className="w-6 h-6 text-purple-600" />
+              <div className="absolute -inset-4 rounded-xl opacity-0 group-hover:opacity-100 transition-all duration-500 blur-xl"></div>
+              <div className="relative bg-transparent rounded-xl p-8">
+                <div className="flex items-center gap-4 mb-6">
+                  <div className="relative">
+                    <div className="w-16 h-16 bg-gradient-to-br from-purple-500 to-purple-600 rounded-2xl flex items-center justify-center transform -rotate-6 group-hover:rotate-0 transition-transform duration-300">
+                      <Eye className="w-8 h-8 text-white" />
+                    </div>
+                    <div className="absolute -bottom-2 -right-2 w-6 h-6 bg-purple-200 rounded-full flex items-center justify-center">
+                      <span className="text-purple-700 text-xs">03</span>
+                    </div>
+                  </div>
+                  <div>
+                    <h3 className="text-xl font-serif font-semibold text-slate-900">Vista Previa</h3>
+                    <div className="w-12 h-1 bg-purple-100 mt-2"></div>
+                  </div>
+                </div>
+                <p className="text-slate-800 leading-relaxed text-justify font-light text-sm">
+                  Visualice en tiempo real cómo quedará su documento final mientras lo edita. Sin sorpresas, sin ajustes posteriores.
+                </p>
               </div>
-              <h3 className="text-lg font-medium text-slate-900 mb-2">Vista Previa en Tiempo Real</h3>
-              <p className="text-sm text-slate-600 font-light">
-                Visualice cómo se verá su documento final mientras lo edita
-              </p>
             </motion.div>
+          </div>
+        </div>
+      </section>
+
+      {/* Document Preview Section */}
+      <section className="bg-gradient-to-b from-slate-50 to-slate-100 py-16 sm:py-24 relative overflow-hidden">
+        <div className="absolute inset-0 bg-[radial-gradient(circle_at_30%_70%,rgba(200,200,255,0.1),transparent)] pointer-events-none"></div>
+        <div className="max-w-6xl mx-auto px-4 sm:px-6">
+          <div className="text-center mb-12 sm:mb-16">
+            <motion.div
+              initial={{ opacity: 0, y: 20 }}
+              whileInView={{ opacity: 1, y: 0 }}
+              viewport={{ once: true }}
+              className="inline-flex items-center gap-2 px-4 py-2 rounded-full bg-slate-900/5 text-slate-900 mb-6"
+            >
+              <div className="w-2 h-2 rounded-full bg-emerald-500"></div>
+              <span className="text-sm font-medium">Documento Final</span>
+            </motion.div>
+            <h2 className="text-3xl sm:text-4xl font-serif font-semibold text-slate-900 mb-4 px-4">
+              Del Template al Documento Final
+            </h2>
+            <p className="text-base sm:text-lg text-slate-600 max-w-2xl mx-auto font-light px-4">
+              Sus clientes completan un formulario simple y automáticamente obtienen el documento personalizado.
+            </p>
+          </div>
+
+          <div className="relative px-4 sm:px-0">
+            <div className="grid grid-cols-1 lg:grid-cols-2 gap-8">
+              {/* Form Preview */}
+              <motion.div
+                initial={{ opacity: 0, x: -20 }}
+                whileInView={{ opacity: 1, x: 0 }}
+                viewport={{ once: true }}
+                className="rounded-xl overflow-hidden border border-slate-200 shadow-2xl bg-white"
+              >
+                <div className="flex items-center gap-2 px-4 py-3 bg-slate-100 border-b border-slate-200">
+                  <div className="flex gap-1.5">
+                    <div className="w-3 h-3 rounded-full bg-red-400"></div>
+                    <div className="w-3 h-3 rounded-full bg-amber-400"></div>
+                    <div className="w-3 h-3 rounded-full bg-green-400"></div>
+                  </div>
+                  <div className="flex-1 mx-4">
+                    <div className="w-full max-w-sm mx-auto h-8 rounded-lg bg-white shadow-sm flex items-center px-3 border border-slate-200">
+                      <FileText className="w-4 h-4 text-slate-400 mr-2" />
+                      <span className="text-sm text-slate-400">formai.cl/documents/fill/contrato-alquiler</span>
+                    </div>
+                  </div>
+                </div>
+
+                <div className="p-6">
+                  <div className="mb-6">
+                    <h3 className="text-xl font-serif font-semibold text-slate-900 mb-2">Complete el Formulario</h3>
+                    <p className="text-sm text-slate-600">Los campos se actualizarán automáticamente en su documento.</p>
+                  </div>
+
+                  <div className="space-y-4">
+                    <div>
+                      <label className="block text-sm font-medium text-slate-700 mb-1">Ciudad</label>
+                      <input type="text" value="Santiago" className="w-full px-3 py-2 border border-slate-200 rounded-lg text-slate-900 bg-slate-50" readOnly />
+                    </div>
+                    <div>
+                      <label className="block text-sm font-medium text-slate-700 mb-1">Nombre del Arrendador</label>
+                      <input type="text" value="Juan Pérez González" className="w-full px-3 py-2 border border-slate-200 rounded-lg text-slate-900 bg-slate-50" readOnly />
+                    </div>
+                    <div>
+                      <label className="block text-sm font-medium text-slate-700 mb-1">Domicilio del Arrendador</label>
+                      <input type="text" value="Av. Providencia 1234, Providencia" className="w-full px-3 py-2 border border-slate-200 rounded-lg text-slate-900 bg-slate-50" readOnly />
+                    </div>
+                    <div>
+                      <label className="block text-sm font-medium text-slate-700 mb-1">Dirección del Inmueble</label>
+                      <input type="text" value="Calle Las Flores 567, Las Condes" className="w-full px-3 py-2 border border-slate-200 rounded-lg text-slate-900 bg-slate-50" readOnly />
+                    </div>
+                  </div>
+
+                  <div className="mt-6 flex items-center justify-between">
+                    <div className="flex items-center gap-2 text-sm text-slate-600">
+                      <CheckCircle className="w-4 h-4 text-emerald-500" />
+                      <span>Formulario Completado</span>
+                    </div>
+                  </div>
+                </div>
+              </motion.div>
+
+              {/* Document Preview */}
+              <motion.div
+                initial={{ opacity: 0, x: 20 }}
+                whileInView={{ opacity: 1, x: 0 }}
+                viewport={{ once: true }}
+                className="rounded-xl overflow-hidden border border-slate-200 shadow-2xl bg-white"
+              >
+                <div className="flex items-center gap-2 px-4 py-3 bg-slate-100 border-b border-slate-200">
+                  <div className="flex gap-1.5">
+                    <div className="w-3 h-3 rounded-full bg-red-400"></div>
+                    <div className="w-3 h-3 rounded-full bg-amber-400"></div>
+                    <div className="w-3 h-3 rounded-full bg-green-400"></div>
+                  </div>
+                  <div className="flex-1 mx-4">
+                    <div className="w-full max-w-sm mx-auto h-8 rounded-lg bg-white shadow-sm flex items-center px-3 border border-slate-200">
+                      <FileText className="w-4 h-4 text-slate-400 mr-2" />
+                      <span className="text-sm text-slate-400">Contrato de Alquiler - Vista Previa</span>
+                    </div>
+                  </div>
+                </div>
+
+                <div className="p-8 bg-white">
+                  <div className="max-w-[600px] mx-auto space-y-6">
+                    <div className="text-center mb-8">
+                      <h1 className="text-2xl font-serif font-bold text-slate-900 mb-2">CONTRATO DE ALQUILER</h1>
+                      <div className="w-16 h-1 bg-slate-200 mx-auto"></div>
+                    </div>
+
+                    <div className="prose prose-slate max-w-none text-sm leading-relaxed">
+                      <p>
+                        En la ciudad de <span className="font-medium">Santiago</span>, 
+                        a los <span className="font-medium">15</span> días del mes 
+                        de <span className="font-medium">marzo</span> del año <span className="font-medium">2024</span>, 
+                        entre <span className="font-medium">Juan Pérez González</span>, 
+                        con domicilio en <span className="font-medium">Av. Providencia 1234, Providencia</span>, 
+                        en adelante "EL ARRENDADOR"...
+                      </p>
+                      
+                      <p>
+                        El inmueble objeto del presente contrato se encuentra ubicado en <span className="font-medium">Calle Las Flores 567, Las Condes</span>...
+                      </p>
+
+                      <p className="text-slate-500">
+                        [Contenido del contrato...]
+                      </p>
+                    </div>
+
+                    <div className="pt-12 mt-12 border-t border-slate-200">
+                      <div className="grid grid-cols-2 gap-12">
+                        <div className="text-center">
+                          <div className="h-0.5 w-48 bg-slate-900 mx-auto mb-2"></div>
+                          <p className="text-sm text-slate-600">El Arrendador</p>
+                          <p className="text-sm font-medium">Juan Pérez González</p>
+                        </div>
+                        <div className="text-center">
+                          <div className="h-0.5 w-48 bg-slate-900 mx-auto mb-2"></div>
+                          <p className="text-sm text-slate-600">El Arrendatario</p>
+                          <p className="text-sm font-medium">María Silva Rodríguez</p>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+
+                <div className="p-4 bg-slate-50 border-t border-slate-200">
+                  <div className="flex items-center justify-between">
+                    <div className="text-sm text-slate-600">
+                      Documento generado automáticamente
+                    </div>
+                    <div className="flex items-center gap-2">
+                      <motion.button
+                        whileHover={{ scale: 1.05 }}
+                        className="px-3 py-2 bg-emerald-50 text-emerald-700 rounded-lg hover:bg-emerald-100 transition-colors flex items-center gap-2"
+                      >
+                        <Download className="w-4 h-4" />
+                        <span className="text-sm">PDF</span>
+                      </motion.button>
+                      <motion.button
+                        whileHover={{ scale: 1.05 }}
+                        className="px-3 py-2 bg-blue-50 text-blue-700 rounded-lg hover:bg-blue-100 transition-colors flex items-center gap-2"
+                      >
+                        <FileText className="w-4 h-4" />
+                        <span className="text-sm">WORD</span>
+                      </motion.button>
+                    </div>
+                  </div>
+                </div>
+              </motion.div>
+            </div>
+
+            {/* New Features Section */}
+            <div className="mt-24 relative">
+              <div className="absolute inset-0 rounded-3xl"></div>
+              <div className="relative grid grid-cols-1 lg:grid-cols-3 gap-8">
+                <motion.div
+                  initial={{ opacity: 0, y: 20 }}
+                  whileInView={{ opacity: 1, y: 0 }}
+                  viewport={{ once: true }}
+                  className="relative group"
+                >
+                  <div className="absolute -inset-4 rounded-xl opacity-0 group-hover:opacity-100 transition-all duration-500 blur-xl"></div>
+                  <div className="relative bg-transparentrounded-xl p-8">
+                    <div className="flex items-center gap-4 mb-6">
+                      <div className="relative">
+                        <div className="w-16 h-16 bg-gradient-to-br from-blue-500 to-blue-600 rounded-2xl flex items-center justify-center transform -rotate-6 group-hover:rotate-0 transition-transform duration-300">
+                          <Users className="w-8 h-8 text-white" />
+                        </div>
+                        <div className="absolute -bottom-2 -right-2 w-6 h-6 bg-blue-200 rounded-full flex items-center justify-center">
+                          <span className="text-blue-700 text-xs">01</span>
+                        </div>
+                      </div>
+                      <div>
+                        <h3 className="text-xl font-serif font-semibold text-slate-900">Formulario Inteligente</h3>
+                        <div className="w-12 h-1 bg-blue-100 mt-2"></div>
+                      </div>
+                    </div>
+                    <p className="text-slate-800 leading-relaxed text-justify font-light text-sm">
+                      Sus clientes reciben un link personalizado para completar un formulario intuitivo. Sin necesidad de cuentas o registros adicionales.
+                    </p>
+                  </div>
+                </motion.div>
+
+                <motion.div
+                  initial={{ opacity: 0, y: 20 }}
+                  whileInView={{ opacity: 1, y: 0 }}
+                  viewport={{ once: true }}
+                  transition={{ delay: 0.1 }}
+                  className="relative group"
+                >
+                  <div className="absolute -inset-4 rounded-xl opacity-0 group-hover:opacity-100 transition-all duration-500 blur-xl"></div>
+                  <div className="relative bg-transparent rounded-xl p-8">
+                    <div className="flex items-center gap-4 mb-6">
+                      <div className="relative">
+                        <div className="w-16 h-16 bg-gradient-to-br from-emerald-500 to-emerald-600 rounded-2xl flex items-center justify-center transform -rotate-6 group-hover:rotate-0 transition-transform duration-300">
+                          <FileCheck className="w-8 h-8 text-white" />
+                        </div>
+                        <div className="absolute -bottom-2 -right-2 w-6 h-6 bg-emerald-200 rounded-full flex items-center justify-center">
+                          <span className="text-emerald-700 text-xs">02</span>
+                        </div>
+                      </div>
+                      <div>
+                        <h3 className="text-xl font-serif font-semibold text-slate-900">Control</h3>
+                        <div className="w-12 h-1 bg-emerald-100 mt-2"></div>
+                      </div>
+                    </div>
+                    <p className="text-slate-800 leading-relaxed text-justify font-light text-sm">
+                      Usted mantiene el control. Genere el documento cuando lo necesite, con la seguridad de que toda la información está correctamente validada.
+                    </p>
+                  </div>
+                </motion.div>
+
+                <motion.div
+                  initial={{ opacity: 0, y: 20 }}
+                  whileInView={{ opacity: 1, y: 0 }}
+                  viewport={{ once: true }}
+                  transition={{ delay: 0.2 }}
+                  className="relative group"
+                >
+                  <div className="absolute -inset-4 rounded-xl opacity-0 group-hover:opacity-100 transition-all duration-500 blur-xl"></div>
+                  <div className="relative bg-transparent rounded-xl p-8">
+                    <div className="flex items-center gap-4 mb-6">
+                      <div className="relative">
+                        <div className="w-16 h-16 bg-gradient-to-br from-purple-500 to-purple-600 rounded-2xl flex items-center justify-center transform -rotate-6 group-hover:rotate-0 transition-transform duration-300">
+                          <Download className="w-8 h-8 text-white" />
+                        </div>
+                        <div className="absolute -bottom-2 -right-2 w-6 h-6 bg-purple-200 rounded-full flex items-center justify-center">
+                          <span className="text-purple-700 text-xs">03</span>
+                        </div>
+                      </div>
+                      <div>
+                        <h3 className="text-xl font-serif font-semibold text-slate-900">Flexibilidad</h3>
+                        <div className="w-12 h-1 bg-purple-100 mt-2"></div>
+                      </div>
+                    </div>
+                    <p className="text-slate-800 leading-relaxed text-justify font-light text-sm">
+                      Exporte sus documentos en múltiples formatos. Desde PDFs profesionales hasta documentos Word editables, adaptados a sus necesidades.
+                    </p>
+                  </div>
+                </motion.div>
+              </div>
+            </div>
           </div>
         </div>
       </section>
