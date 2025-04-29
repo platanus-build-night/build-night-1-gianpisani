@@ -1,0 +1,203 @@
+@font-face {
+  font-family: 'Times New Roman';
+  src: local('Times New Roman');
+}
+
+.editor-container {
+  font-family: 'Times New Roman', serif;
+}
+
+.editor-container .ProseMirror {
+  font-family: 'Times New Roman', serif;
+  min-height: 500px;
+  padding: 1.5rem;
+  outline: none;
+  cursor: text;
+}
+
+.editor-container .ProseMirror * {
+  transition: background-color 0.15s ease;
+}
+
+.editor-container .ProseMirror h1 {
+  font-size: 2.5em;
+  margin-bottom: 0.5em;
+  font-weight: bold;
+  line-height: 1.2;
+}
+
+.editor-container .ProseMirror h2 {
+  font-size: 2em;
+  margin-bottom: 0.5em;
+  font-weight: bold;
+  line-height: 1.2;
+}
+
+.editor-container .ProseMirror h3 {
+  font-size: 1.5em;
+  margin-bottom: 0.5em;
+  font-weight: bold;
+  line-height: 1.2;
+}
+
+.editor-container .ProseMirror p {
+  margin-bottom: 1em;
+  line-height: 1.5;
+}
+
+.editor-container .ProseMirror ul {
+  list-style-type: disc;
+  padding-left: 1.5em;
+  margin-bottom: 1em;
+}
+
+.editor-container .ProseMirror ol {
+  list-style-type: decimal;
+  padding-left: 1.5em;
+  margin-bottom: 1em;
+}
+
+.editor-container .ProseMirror li {
+  margin-bottom: 0.5em;
+}
+
+.editor-container .ProseMirror strong {
+  font-weight: bold;
+}
+
+.editor-container .ProseMirror em {
+  font-style: italic;
+}
+
+.editor-container .ProseMirror u {
+  text-decoration: underline;
+}
+
+.editor-container .ProseMirror s {
+  text-decoration: line-through;
+}
+
+.editor-container .ProseMirror[data-placeholder]::before {
+  color: #adb5bd;
+  content: attr(data-placeholder);
+  float: left;
+  height: 0;
+  pointer-events: none;
+}
+
+/* Estilos de alineación mejorados */
+.editor-container .ProseMirror .is-text-left,
+.editor-container .ProseMirror [style*="text-align: left"] {
+  text-align: left !important;
+}
+
+.editor-container .ProseMirror .is-text-center,
+.editor-container .ProseMirror [style*="text-align: center"] {
+  text-align: center !important;
+}
+
+.editor-container .ProseMirror .is-text-right,
+.editor-container .ProseMirror [style*="text-align: right"] {
+  text-align: right !important;
+}
+
+.editor-container .ProseMirror .is-text-justify,
+.editor-container .ProseMirror [style*="text-align: justify"] {
+  text-align: justify !important;
+}
+
+/* Asegurar que los headings mantengan su alineación */
+.editor-container .ProseMirror h1[style*="text-align"],
+.editor-container .ProseMirror h2[style*="text-align"],
+.editor-container .ProseMirror h3[style*="text-align"] {
+  display: block;
+  width: 100%;
+}
+
+.editor-container .ProseMirror mark {
+  background-color: #fef3c7;
+  border-radius: 0.2em;
+  padding: 0.1em 0.3em;
+}
+
+.editor-container .ProseMirror [data-type="variable"] {
+  display: inline-flex;
+  align-items: center;
+  background-color: #e8f4ff;
+  color: #1a73e8;
+  padding: 0.125rem 0.5rem;
+  border-radius: 0.5rem;
+  font-size: 0.875rem;
+  line-height: 1.25rem;
+  white-space: nowrap;
+  cursor: default;
+  user-select: none;
+  font-family: ui-sans-serif, system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, "Noto Sans", sans-serif;
+}
+
+/* Estilos para el texto seleccionado */
+.editor-container .ProseMirror ::selection {
+  background: #b4d5fe;
+}
+
+/* Estilos para las listas anidadas */
+.editor-container .ProseMirror ul ul,
+.editor-container .ProseMirror ol ol,
+.editor-container .ProseMirror ul ol,
+.editor-container .ProseMirror ol ul {
+  margin-top: 0.5em;
+  margin-bottom: 0.5em;
+}
+
+/* Estilos para el espaciado entre párrafos */
+.editor-container .ProseMirror p + p {
+  margin-top: 0.5em;
+}
+
+/* Estilos para el texto con color */
+.editor-container .ProseMirror [style*="color"] {
+  border-radius: 0.2em;
+  padding: 0.1em 0;
+}
+
+/* Mejorar la visibilidad del cursor */
+.editor-container .ProseMirror .ProseMirror-gapcursor {
+  display: none;
+  pointer-events: none;
+  position: absolute;
+}
+
+.editor-container .ProseMirror .ProseMirror-gapcursor:after {
+  content: "";
+  display: block;
+  position: absolute;
+  top: -2px;
+  width: 20px;
+  border-top: 1px solid #000;
+  animation: ProseMirror-cursor-blink 1.1s steps(2, start) infinite;
+}
+
+@keyframes ProseMirror-cursor-blink {
+  to {
+    visibility: hidden;
+  }
+}
+
+/* Mejorar la interactividad de los botones */
+.editor-container button {
+  touch-action: manipulation;
+  -webkit-tap-highlight-color: transparent;
+}
+
+/* Asegurar que los elementos editables tengan el cursor correcto */
+.editor-container [contenteditable=true] {
+  cursor: text;
+  -webkit-user-select: text;
+  user-select: text;
+}
+
+/* Mejorar la visibilidad del foco */
+.editor-container .ProseMirror:focus {
+  outline: none;
+  box-shadow: 0 0 0 2px rgba(59, 130, 246, 0.1);
+} 

@@ -90,7 +90,7 @@ export default function ProcedurePage({ params }: { params: Promise<{ id: string
       
       setShowSuccessModal(true)
       setTimeout(() => {
-        router.push('/')
+        router.push('/documents')
       }, 5000)
     } catch (error) {
       console.error('Error:', error)
